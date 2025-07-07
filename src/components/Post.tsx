@@ -14,20 +14,20 @@ interface FileDetailsResponse {
   customMetadata?: { sensitive: boolean };
 }
 
-const Post = async ({ type }: { type?: "status" | "comment" }) => {
-  const getFileDetails = async (
-    fileId: string
-  ): Promise<FileDetailsResponse> => {
-    return new Promise((resolve, reject) => {
-      imagekit.getFileDetails(fileId, function (error, result) {
-        if (error) reject(error);
-        else resolve(result as FileDetailsResponse);
-      });
-    });
-  };
+const Post = ({ type }: { type?: "status" | "comment" }) => {
+  // const getFileDetails = async (
+  //   fileId: string
+  // ): Promise<FileDetailsResponse> => {
+  //   return new Promise((resolve, reject) => {
+  //     imagekit.getFileDetails(fileId, function (error, result) {
+  //       if (error) reject(error);
+  //       else resolve(result as FileDetailsResponse);
+  //     });
+  //   });
+  // };
 
-  const fileDetails = await getFileDetails("68543bcbb13a1025373a6a6c");
-  //await getFileDetails("447444");
+  // const fileDetails = await getFileDetails("68543bcbb13a1025373a6a6c");
+  // //await getFileDetails("447444");
   return (
     <div className="p-4 border-y-[1px] border-borderGray">
       {/**Post type */}
@@ -106,7 +106,7 @@ const Post = async ({ type }: { type?: "status" | "comment" }) => {
               debitis dolores ipsum deserunt numquam.
             </p>
           </Link>
-          {fileDetails && fileDetails.fileType === "image" ? (
+          {/* {fileDetails && fileDetails.fileType === "image" ? (
             <Imag
               path="general/post.jpeg"
               alt=""
@@ -119,7 +119,7 @@ const Post = async ({ type }: { type?: "status" | "comment" }) => {
               path={fileDetails.filePath}
               className={fileDetails.customMetadata?.sensitive ? "blur-lg" : ""}
             />
-          )}
+          )} */}
           {type === "status" && (
             <span className="text-textGray">2:01 pm * dec 6, 20</span>
           )}
