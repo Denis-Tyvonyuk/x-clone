@@ -4,23 +4,27 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Create 5 users with unique details
-  const users = [];
-  for (let i = 1; i <= 5; i++) {
-    const user = await prisma.user.create({
-      data: {
-        id: `user${i}`,
-        email: `user${i}@example.com`,
-        username: `user${i}`,
-        displayName: `User ${i}`,
-        bio: `Hi I'm user${i}. Welcome to my profile!`,
-        location: `USA`,
-        job: `Developer`,
-        website: `google.com`,
-      },
-    });
-    users.push(user);
-  }
-  console.log(`${users.length} users created.`);
+  const users = await Promise.all(
+    Array.from({ length: 5 }, (_, i) => {
+      const index = i + 1;
+      return prisma.user.upsert({
+        where: { email: `user${index}@example.com` },
+        update: {}, // leave empty if you don’t want to update existing users
+        create: {
+          id: `user${index}`,
+          email: `user${index}@example.com`,
+          username: `user${index}`,
+          displayName: `User ${index}`,
+          bio: `Hi I'm user${index}. Welcome to my profile!`,
+          location: `USA`,
+          job: `Developer`,
+          website: `google.com`,
+        },
+      });
+    })
+  );
+
+  console.log(`${users.length} users created or ensured.`);
 
   // Create 5 posts for each user
   const posts = [];
